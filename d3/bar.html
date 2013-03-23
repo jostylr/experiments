@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Bar Chart</title>
+        <script src="d3.v3.js"></script>
+        <script src="rgbcolor.js"></script>
+        <script src="canvg.js"></script>
+    </head>
+    <body>
+       
+
+<p>We want to build a bar chart. Our data will be 
+
+</p>
+<table id="data"></table>
+
+<p>Our data goes from 0 to 20 and we want lengths to be of length 2. So 10 bars. 
+
+</p>
+<p>The tabulated data is 
+
+</p>
+<table id="counts"></table>
+
+<p>The chart is
+
+</p>
+<style type='text/css'>/<em>stolen from <a href="http://code.hazzens.com/d3tut/lesson_2.html">http://code.hazzens.com/d3tut/lesson_2.html</a></em>/
+
+  .axis .domain, .axis .tick {
+    stroke: #000;
+    fill: none;
+    font-family : Verdana, sans-serif;
+    font-size: 32px;
+
+  }
+
+  td { text-align: right}
+</style>
+
+<div id="chart"></div>
+
+<canvas id="canvas" width="1000px" height="600px"></canvas> 
+
+<script >function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+var i, n= 100, data = [];
+for (i=0; i < n; i+= 1) {
+    data.push(getRandomArbitrary(0,20));
+}
+
+data.sort(d3.descending);
+
+var matrix = [], ii, nn = 10, row; 
+n = 10;
+for (i = 0; i < n; i += 1) {
+    row = [];
+    for (ii = 0; ii <nn; ii += 1) {
+        row.push(data[i*10 + ii]);
+    }   
+    matrix.push(row);
+}
+
+d3.select("#data").selectAll("tr")
+    .data(matrix).enter()
+  .append("tr").selectAll("td")
+    .data(Object).enter()
+  .append("td")
+    .text(d3.format('.2f'));
+
+var width = 640;
+var height = 480;
+var root = d3.select("#chart").append("svg")
+    .attr({
+        width:width+100,
+        height:height
+    })
+    .style({
+        border: '1px solid black',
+        background: 'white',
+        'font-family' : 'Verdana, sans-serif',
+    })
+    .append("g")
+      .style({
+        border: '1px solid black',
+        background: 'grey',
+        'font-family' : 'Verdana, sans-serif',
+    });
+
+    
+
+var titleHeight = 50;
+root.append("text")
+    .attr({
+        'class' : 'title',
+        'x' : width/2,
+        'y' : titleHeight/2
+    })
+    .style({
+        'fill': '#666',
+        'font-family': 'Helvetica, sans-serif',
+        'text-anchor': 'middle',
+        'font-size': '24px'
+    })
+    .text("Random Data");
+
+var max = 20, min = 0, step = 2; 
+
+var indices = d3.scale.linear()
+    .domain([0, 1])
+    .rangeRound([min+step/2, min+3*step/2]);
+
+var counts = d3.range(indices.invert(max+step/2))
+    .map(function () {return 0;});
+
+data.forEach(function (v) {counts[Math.round(indices.invert(v))] += 1;});
+
+var countsrows = d3.select("#counts").selectAll("tr")
+    .data(counts).enter()
+  .append("tr");
+
+countsrows
+    .append("td")
+        .text(function (d,i) {return indices(i);});
+
+countsrows
+      .append("td")
+        .text(function (d) {return d;});
+
+var xAxisHeight = 50;
+var yAxisWidth = 50;
+
+var xScale = d3.scale.linear()
+    .domain([0, counts.length])
+    .range([yAxisWidth, width]);
+var yScale = d3.scale.linear()
+    .domain([0, d3.max(counts) * 1.2])
+    .range([height - xAxisHeight, titleHeight]);
+
+var xScaleInd = d3.scale.linear()
+    .domain([min, max])
+    .range([yAxisWidth, width]);
+
+var xAxis = d3.svg.axis().scale(xScaleInd);
+root.append('g')
+    .attr({
+      'class': 'x axis',
+      'transform': 'translate(0,' + (height - xAxisHeight) + ')'
+    })
+    .call(xAxis);
+
+var yAxis = d3.svg.axis().scale(yScale).orient('left');
+root.append('g')
+    .attr({
+      'class': 'y axis',
+      'transform': 'translate(' + yAxisWidth + ',0)'
+    })
+    .call(yAxis);
+
+var barWidth = 1
+
+root.selectAll('rect.bar')
+    .data(counts).enter()
+  .append('rect')
+    .attr({
+      'class': 'bar',
+      'x': function(d, i) { return xScale(i + 0*(1-barWidth/2)); },
+      'width': xScale(barWidth) - xScale(0),
+      'y': function(d) { return yScale(d); }  ,
+      'height': function(d) { return yScale(0) - yScale(d); }
+    })
+    .style({
+        fill: "#fcc",
+        stroke: "#444"
+    });
+
+var xml = new XMLSerializer();
+var str = xml.serializeToString(root[0][0]);
+canvg(document.getElementById('canvas'), str);
+var img    = canvas.toDataURL("image/png");
+d3.select('body').append('img').attr('src', img);</script>
+
+    </body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>First SVG</title>
+        <script src="d3.v3.js"></script>
+        <script src="rgbcolor.js"></script>
+        <script src="canvg.js"></script>
+    </head>
+    <body>
+       
+
+<p>First some intro
+
+</p>
+<p>then some other great stuff
+
+</p>
+<svg height="50px">
+    <circle r="10" cx="10" cy="20" fill="darkorange"/>
+    <circle r="10" cx="20" cy="20" fill="darkorange"/>
+    <circle r="10" cx="30" cy="20" fill="darkorange"/>
+
+<svg>
+
+<p>ipso facto
+
+</p>
+<p>And this one?</p>
+
+
+<script >d3.selectAll("p")
+    .data([16, 23, 42])
+    .style("font-size", function(d) { return d + "px"; });
+
+d3.selectAll("circle")
+    .style("stroke", "darkseagreen")
+    .data([10, 15, 20])
+    .attr("r", function(d) {return d+"px";})
+    .attr("cx", function(d) {return 10*d*Math.random() + "px";})
+    .append("svg:text").text(function(d) {return d;});</script>
+
+    </body>
+</html>
