@@ -41,32 +41,45 @@ So we want to test the waters with a simple parsing of the fizzbuzz.md literate 
 
     renderer.heading = function (text, level, raw) {
         console.log(text);
-        i
         current = blocks[text] = [];
         return "";
     };
 
     var c = renderer.code;
     renderer.code = function (code, language) {
-        
+
     }
 
     var clink; 
     var l = renderer.link;
     renderer.link = function (href, title, text) {
+        if (title) {
+            title = title.replace(/&quot;/g, "\"");
+        } else {
+            title = "";
+        }
         clink = [href, title, text];
-        return "!~!"+text;
+        return text;
     };
 
-    renderer.p = renderer.paragraph;
+    var plain = function (text) {
+        return text;
+    }; 
+
+    ["strong", "em", "codespan", "del"].forEach(function (el) {
+        renderer[el] = plain;
+    });
+
+
     renderer.paragraph = function (text) {
-        if (text === "!~!"+clink[2]) {
+        if (text === clink[2]) {
             console.log("switch: ", clink);
         }
+        clink = [];
         return "";
     };
 
-    var file = fs.readFileSync("fizzbuzz.md","utf8");
+    var file = fs.readFileSync("links.md","utf8");
 
     marked(file, {renderer:renderer});
 
