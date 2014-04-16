@@ -2,7 +2,7 @@
 
 FizzBuzz is a trivial program that [weeds out programmers](http://www.codinghorror.com/blog/2007/02/why-cant-programmers-program.html).  
 
-The goal of the program is to to print out the numbers from 1 to 100 except multiples of 3 should output Fizz, of 5 Buzz, and of both FizzBuzz. 
+The goal of the program is to to print out the numbers from 1 to 100 except multiples of 3 should output Fizz, of 5 Buzz, and of both FizzBuzz. great. 
 
 We create just one file. To run it, run node on [fizzbuzz.js](#structure "save:| jstidy()")
 
