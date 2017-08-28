@@ -1,0 +1,23 @@
+<!doctype html>
+<title>Hello World</title>
+<body>
+    <script src="//unpkg.com/mithril/mithril.js"></script>
+    <script>
+        var root = document.body;
+        var m = window.m;
+        m.mount(root, (function (  ) {let count = 0;
+        const click = function () {count += 1;};
+        return {
+            view: function () {
+                return m("main", [
+                    m("h1", {class:"title"}, "Hello world"),
+                    m("button", {
+                        onclick: click
+                        }, count + " clicks")
+                ]); 
+             }
+        };
+        } (  ) ) );
+
+    </script>
+</body>
