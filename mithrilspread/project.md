@@ -123,6 +123,12 @@ are 0, then those are label cells. Otherwise, we create an actual cell.
 
 Here is the body of the HTML
 
+
+
+
+
+
+
 ## Reference
 
 This is the hosted version. 
@@ -160,7 +166,7 @@ This is the hosted version.
         data[cell] = computable(value)
         localStorage["spreadsheet"] = JSON.stringify(data)
     }
-    var cell;
+    var currentCell = "a1" ;
     function grid(withCell) {
         for (var rows = [], i = 0; i < 27; i++) {
             for (var cols = [], j = 0; j < 17; j++) {
@@ -174,16 +180,16 @@ This is the hosted version.
     function view() {
         return [
             m("input.formula", {
-                onchange: m.withAttr("value", update.bind(this, cell())),
-                value: data[cell()] || ""
+                onchange: m.withAttr("value", update.bind(this, cell ))),
+                value: data[cell.name] || ""
             }),
             grid(function(cellName) {
                 var value = compute(data[cellName]) || ""
                 if (value) console.log(123,value)
                 return m("input", {
                     onkeydown: move,
-                    onfocus: cell.bind(this, cellName),
-                    onchange: m.withAttr("value", update.bind(this, cellName)),
+                    onfocus: cell.bind(this, cell.Name),
+                    onchange: m.withAttr("value", update.bind(this, cell)),
                     value: value,
                     style: {textAlign: isNaN(value) || value === "" ? "left" : "right"}
                 })
@@ -203,7 +209,7 @@ This is the hosted version.
         cell.selectionEnd = cell.value.length
         //return false
     }
-    m.render(document.body, view );
+    m.render(document.body, {view:view} );
     </script>
 
 [ref.html](# "save:")
