@@ -6,18 +6,26 @@ var blocks = {};
 var current = blocks._initial = [];
 
 renderer.heading = function (text, level, raw) {
-    console.log(text);
+    console.log(text, level);
     current = blocks[text] = [];
     return "";
 };
 
-var c = renderer.code;
 renderer.code = function (code, language) {
+    current.push(code);
+};
 
-}
+renderer.html = function (text) {
+    var pos;
+    console.log("HTML"+ text + "!HTML"); 
+    if (text.slice(0,5) === "<pre>") {
+        pos = text.indexOf("</pre>");
+        console.log("pre", text.slice(5, pos));
+        current.push(text.slice(5, pos));
+    }
+};
 
 var clink; 
-var l = renderer.link;
 renderer.link = function (href, title, text) {
     if (title) {
         title = title.replace(/&quot;/g, "\"");

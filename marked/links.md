@@ -47,3 +47,26 @@ Becomes
 Anyway. 
 
 this is **something** special _yeah_ what `about code` or ~~del~~
+
+
+<pre>how does this work? 
+
+great? **no?**
+
+## any md
+
+<em>this is cool</em>
+</pre>
+
+code fences
+
+```
+<pre>how does this work? 
+
+great? **no?**
+
+## any md
+
+<em>this is cool</em>
+</pre>
+```

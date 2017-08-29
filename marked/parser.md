@@ -40,18 +40,26 @@ So we want to test the waters with a simple parsing of the fizzbuzz.md literate 
     var current = blocks._initial = [];
 
     renderer.heading = function (text, level, raw) {
-        console.log(text);
+        console.log(text, level);
         current = blocks[text] = [];
         return "";
     };
 
-    var c = renderer.code;
     renderer.code = function (code, language) {
+        current.push(code);
+    };
 
-    }
+    renderer.html = function (text) {
+        var pos;
+        console.log("HTML"+ text + "!HTML"); 
+        if (text.slice(0,5) === "<pre>") {
+            pos = text.indexOf("</pre>");
+            console.log("pre", text.slice(5, pos));
+            current.push(text.slice(5, pos));
+        }
+    };
 
     var clink; 
-    var l = renderer.link;
     renderer.link = function (href, title, text) {
         if (title) {
             title = title.replace(/&quot;/g, "\"");
@@ -98,6 +106,6 @@ So we can use the renderer as above, but it seems clunky, particularly not knowi
     var tokens = marked.lexer(text);
     console.log(tokens);
 
-    console.log(marked.lexer('> i am using marked.'));
+    console.log(marked.lexer('> i am [using](fake) marked.'));
 
 So the lexer is lexing the blocks. I think it then parses the text of each of the blocks for inline stuff. Seems reasonable. But I think this means I need to use the renderer function. It does not appear that there is any tree constructed. Of course, I could construct a tree...

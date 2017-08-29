@@ -1,0 +1,5 @@
+## This is a !!fine start
+
+So I want to move around. 
+
+Using keyremap4macbook or something, I mapped caps lock to be escape on single press with caps lock already being mapped to caps lock. So tap and release caps lock give escape. I also mapped commnd-r to enter when just tapped. Held down, it continues on. 
